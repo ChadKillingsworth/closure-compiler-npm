@@ -37,6 +37,8 @@
   "homepage": "https://developers.google.com/closure/compiler/",
   "dependencies": {
     "chalk": "^1.0.0",
+    "lazypipe": "^1.0.1",
+    "module-deps": "^4.0.7",
     "vinyl": "^1.2.0",
     "vinyl-sourcemaps-apply": "^0.2.0"
   },
@@ -47,10 +49,10 @@
     "lodash": "^4.6.1",
     "mocha": "^2.3.4",
     "ncp": "^2.0.0",
+    "page": "^1.7.1",
     "semver": "^5.1.0",
     "should": "^8.2.2",
-    "stream-assert": "^2.0.3",
-    "vinyl": "^1.1.0"
+    "stream-assert": "^2.0.3"
   },
   "scripts": {
     "test": "mocha",
