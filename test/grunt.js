@@ -153,6 +153,44 @@ describe('grunt-google-closure-compiler', function() {
     closureCompiler.call(taskObj);
   });
 
+  it('should support camel-case', function(done) {
+    this.timeout(30000);
+    this.slow(10000);
+
+    var fileOneDest = 'test/out/one.js';
+
+    function taskDone() {
+      var fileOne = fs.statSync(fileOneDest);
+      should(fileOne.isFile()).be.eql(true);
+      should(fs.readFileSync(fileOneDest, 'utf8')).startWith('(function()');
+
+      fs.unlinkSync(fileOneDest);
+      fs.rmdirSync('test/out');
+      done();
+    }
+
+    mockGrunt.log.warn = function (msg) {
+      console.log(msg);
+      assertNoWarning.fail();
+    };
+
+    mockGrunt.fail.warn = function (err, code) {
+      assertNoError.fail();
+      taskDone();
+    };
+
+    var taskObj = getGruntTaskObject([
+      {src: ['test/fixtures/one.js'], dest: fileOneDest},
+    ], {
+      compilationLevel: 'SIMPLE',
+      outputWrapper: '(function(){%output%})()'
+    }, function () {
+      taskDone();
+    });
+
+    closureCompiler.call(taskObj);
+  });
+
   it('should run once for each destination', function(done) {
     this.timeout(30000);
     this.slow(10000);

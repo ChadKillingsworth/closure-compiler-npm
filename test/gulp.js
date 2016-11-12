@@ -80,6 +80,23 @@ describe('gulp-google-closure-compiler', function() {
       stream.end();
     });
 
+    it('should support camel-case options', function(done) {
+      var stream = closureCompiler({
+        compilationLevel: 'SIMPLE',
+        warningLevel: 'VERBOSE',
+        outputWrapper: '(function(){%output%})()'
+      });
+
+      stream.pipe(assert.length(1))
+          .pipe(assert.first(function (f) {
+            f.contents.toString().trim().should.eql('(function(){' + fakeFile1.contents.toString() + '})()');
+          }))
+          .pipe(assert.end(done));
+
+      stream.write(fakeFile1);
+      stream.end();
+    });
+
     it('should name the output file when no js_output_file option is provided', function(done) {
       var stream = closureCompiler({
         compilation_level: 'SIMPLE',
