@@ -23,7 +23,7 @@
 'use strict';
 
 const should = require('should');
-const compilerPackage = require('google-closure-compiler');
+const compilerPackage = require('@banno/google-closure-compiler');
 const Compiler = compilerPackage.compiler;
 const packageInfo = require('../lerna.json');
 const Semver = require('semver');
