@@ -70,6 +70,9 @@ jobs:
 
   build:
     needs: create-release
+    permissions:
+      contents: write
+      id-token: write  # Required for OIDC
     if: ${{ needs.create-release.outputs.COMPILER_VERSION_NUMBER != '' }}
     uses: ./.github/workflows/build.yml
     with:
