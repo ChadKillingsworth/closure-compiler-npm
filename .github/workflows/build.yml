@@ -167,63 +167,6 @@ jobs:
           name: Linux image
           path: packages/google-closure-compiler-linux/compiler
 
-  # Build the native image on Linux
-  # The runner image determines GLIBC compatibility and should not be changed without
-  # understanding the impact. See https://github.com/google/closure-compiler-npm/issues/280
-  build-linux-arm64:
-    name: Build Linux Native Image for arm processors
-    needs: build-compiler
-    runs-on: ubuntu-24.04-arm
-    env:
-      NODE_VERSION: '20.x'
-      FORCE_COLOR: '1'
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
-        with:
-          ref: ${{ inputs.release-tag || '' }}
-      - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # 4.4.0
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: yarn
-      - name: Setup GraalVM
-        uses: graalvm/setup-graalvm@01ed653ac833fe80569f1ef9f25585ba2811baab # 1.3.3
-        with:
-          java-version: 24
-          distribution: 'graalvm-community'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
-      - name: Download compiler jar
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # 4.3.0
-        with:
-          name: Compiler.jar
-          path: packages/google-closure-compiler-java/
-      - name: Download contrib folder
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # 4.3.0
-        with:
-          name: Contrib folder
-          path: packages/google-closure-compiler/contrib
-      - name: Download externs folder
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # 4.3.0
-        with:
-          name: Externs folder
-          path: packages/google-closure-compiler/externs
-      - name: Install packages
-        run: YARN_ENABLE_COLORS=true yarn install
-      - name: Build image
-        working-directory: packages/google-closure-compiler-linux-arm64
-        run: |
-          cp ../google-closure-compiler-java/compiler.jar compiler.jar
-          yarn run build
-      - name: Tests
-        run: FORCE_COLOR=1 yarn workspaces foreach -A --no-private run test
-      - name: Upload artifacts
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: Linux arm64 image
-          path: packages/google-closure-compiler-linux-arm64/compiler
-
   # Build the native image on MacOS
   build-macos:
     name: Build MacOS Native Image
@@ -349,7 +292,6 @@ jobs:
       FORCE_COLOR: '1'
     needs:
       - build-linux
-      - build-linux-arm64
       - build-macos
       - build-windows
     steps:
@@ -373,11 +315,6 @@ jobs:
         with:
           name: Linux image
           path: packages/google-closure-compiler-linux/
-      - name: Download Linux arm64 image
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # 4.3.0
-        with:
-          name: Linux arm64 image
-          path: packages/google-closure-compiler-linux-arm64/
       - name: Download MacOS image
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # 4.3.0
         with:
@@ -401,7 +338,6 @@ jobs:
       - name: Mark binaries executable
         run: |
           chmod 755 packages/google-closure-compiler-linux/compiler
-          chmod 755 packages/google-closure-compiler-linux-arm64/compiler
           chmod 755 packages/google-closure-compiler-macos/compiler
           chmod 755 packages/google-closure-compiler-windows/compiler.exe
       - name: Install packages
