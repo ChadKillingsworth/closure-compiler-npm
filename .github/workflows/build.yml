@@ -17,6 +17,8 @@ jobs:
   build-compiler:
     name: Build Compiler
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     env:
       FORCE_COLOR: '1'
     steps:
@@ -76,6 +78,8 @@ jobs:
   build-linux:
     name: Build Linux Native Image
     needs: build-compiler
+    permissions:
+      contents: read
     runs-on: ubuntu-24.04
     env:
       NODE_VERSION: '20.x'
@@ -173,6 +177,8 @@ jobs:
   build-linux-arm64:
     name: Build Linux Native Image for arm processors
     needs: build-compiler
+    permissions:
+      contents: read
     runs-on: ubuntu-24.04-arm
     env:
       NODE_VERSION: '20.x'
@@ -228,6 +234,8 @@ jobs:
   build-macos:
     name: Build MacOS Native Image
     needs: build-compiler
+    permissions:
+      contents: read
     runs-on: macos-latest
     env:
       NODE_VERSION: '22.x'
@@ -283,6 +291,8 @@ jobs:
   build-windows:
     name: Build Windows Native Image
     needs: build-compiler
+    permissions:
+      contents: read
     runs-on: windows-latest
     env:
       NODE_VERSION: '22.x'
