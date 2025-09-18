@@ -82,8 +82,8 @@ certain arguments:
 ## Build Tool Plugins
 The compiler package also includes build tool plugins for [Grunt](http://gruntjs.com/) and [Gulp](http://gulpjs.com/). There is also an [official webpack plugin](https://www.npmjs.com/package/closure-webpack-plugin).
 
- * [Grunt Plugin](https://github.com/google/closure-compiler-npm/blob/master/packages/google-closure-compiler/docs/grunt.md)
- * [Gulp Plugin](https://github.com/google/closure-compiler-npm/blob/master/packages/google-closure-compiler/docs/gulp.md)
+ * [Grunt Plugin](https://github.com/chadkillingsworth/closure-compiler-npm/blob/master/packages/google-closure-compiler/docs/grunt.md)
+ * [Gulp Plugin](https://github.com/chadkillingsworth/closure-compiler-npm/blob/master/packages/google-closure-compiler/docs/gulp.md)
 
 ### Community Maintained Plugins
 Additionally, community members have created plugins leveraging this library.

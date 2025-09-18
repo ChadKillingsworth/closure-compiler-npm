@@ -26,7 +26,7 @@
   ],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/google/closure-compiler/issues"
+    "url": "https://github.com/chadkillingsworth/closure-compiler-npm/issues"
   },
   "homepage": "https://developers.google.com/closure/compiler/",
   "devDependencies": {

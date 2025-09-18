@@ -6,7 +6,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/google/closure-compiler-npm.git#master"
+    "url": "git+https://github.com/chadkillingsworth/closure-compiler-npm.git#master"
   },
   "homepage": "https://developers.google.com/closure/compiler/",
   "author": "Chad Killingsworth <chadkillingsworth@gmail.com>",
