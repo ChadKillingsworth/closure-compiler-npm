@@ -173,7 +173,7 @@ jobs:
 
   # Build the native image on Linux
   # The runner image determines GLIBC compatibility and should not be changed without
-  # understanding the impact. See https://github.com/google/closure-compiler-npm/issues/280
+  # understanding the impact. See https://github.com/chadkillingsworth/closure-compiler-npm/issues/280
   build-linux-arm64:
     name: Build Linux Native Image for arm processors
     needs: build-compiler

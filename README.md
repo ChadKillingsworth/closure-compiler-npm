@@ -13,17 +13,17 @@ The compiler is distributed for multiple platforms. Each platform is its own npm
 ### Main Package
 
 The google-closure-compiler package contains Grunt and Gulp plugins and a CLI:
-[google-closure-compiler](https://github.com/google/closure-compiler-npm/tree/master/packages/google-closure-compiler)
+[google-closure-compiler](https://github.com/chadkillingsworth/closure-compiler-npm/tree/master/packages/google-closure-compiler)
 
 ### Other packages
 
 Bare bones distributions intended for developers who want to author against a specific platform.
 
- - Java build: [google-closure-compiler-java](https://github.com/google/closure-compiler-npm/tree/master/packages/google-closure-compiler-java)
- - Native Linux build: [google-closure-compiler-linux](https://github.com/google/closure-compiler-npm/tree/master/packages/google-closure-compiler-linux)
- - Native Linux (arm64) build: [google-closure-compiler-linux-arm64](https://github.com/google/closure-compiler-npm/tree/master/packages/google-closure-compiler-linux-arm64)
- - Native MacOS build: [google-closure-compiler-macos](https://github.com/google/closure-compiler-npm/tree/master/packages/google-closure-compiler-macos)
- - Native Windows build: [google-closure-compiler-windows](https://github.com/google/closure-compiler-npm/tree/master/packages/google-closure-compiler-windows)
+ - Java build: [google-closure-compiler-java](https://github.com/chadkillingsworth/closure-compiler-npm/tree/master/packages/google-closure-compiler-java)
+ - Native Linux build: [google-closure-compiler-linux](https://github.com/chadkillingsworth/closure-compiler-npm/tree/master/packages/google-closure-compiler-linux)
+ - Native Linux (arm64) build: [google-closure-compiler-linux-arm64](https://github.com/chadkillingsworth/closure-compiler-npm/tree/master/packages/google-closure-compiler-linux-arm64)
+ - Native MacOS build: [google-closure-compiler-macos](https://github.com/chadkillingsworth/closure-compiler-npm/tree/master/packages/google-closure-compiler-macos)
+ - Native Windows build: [google-closure-compiler-windows](https://github.com/chadkillingsworth/closure-compiler-npm/tree/master/packages/google-closure-compiler-windows)
 
 ## License
 Copyright 2015 The Closure Compiler Authors
