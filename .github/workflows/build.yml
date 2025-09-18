@@ -9,9 +9,6 @@ on:
       release-tag:
         required: true
         type: string
-    secrets:
-      NPM_PUBLISH_AUTH_TOKEN:
-        required: true
   pull_request:
     branches: [ master ]
 
@@ -341,6 +338,9 @@ jobs:
   # Publish the packages if needed
   publish-packages:
     name: Publish Packages
+    permissions:
+      id-token: write  # Required for OIDC
+      contents: read
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call' }}
     env:
