@@ -1,5 +1,7 @@
 # google-closure-compiler
 
+<!-- this repo was moved from https://github.com/google/closure-compiler-npm -->
+
 Check, compile, optimize and compress JavaScript with Closure-Compiler
 
 This repository tracks issues related to the publication to npmjs.org and associated plugins.
