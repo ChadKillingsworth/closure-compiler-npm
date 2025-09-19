@@ -460,17 +460,18 @@ describe('gulp-google-closure-compiler', function() {
         ensureCorrectPlatformUtilized();
       });
 
-      it('in streaming mode should emit an error', async () => {
-        // Gulp throws a global uncatchable stream error
-        // Handle the error so that the test suite does not fail
-        const globalExceptionListener = (err) => {};
-        process.on('uncaughtException', globalExceptionListener);
+      it('in streaming mode should emit an error', () => {
         let errorEncountered = false;
-        await new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
           gulp.src(`${__dirname}fixtures/**/*.js`, {buffer: false})
               .on('error', (err) =>{
                 errorEncountered = true;
                 expect(err.message).toMatch(/^(gulp-google-closure-compiler: )?Streaming not supported/);
+              })
+              .on('close', () => {
+                if (!errorEncountered) {
+                  reject(new Error('should have encountered an error'))
+                }
                 resolve();
               })
               .pipe(closureCompiler({

@@ -53,7 +53,7 @@
     "google-closure-compiler-windows": "^20250915.0.0"
   },
   "devDependencies": {
-    "gulp": "^4.0.2 || ^5.0.1",
+    "gulp": "^5.0.1",
     "gulp-sourcemaps": "^3.0.0",
     "jasmine": "5.10.0",
     "jasmine-console-reporter": "3.1.0",

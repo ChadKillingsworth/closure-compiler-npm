@@ -1124,7 +1124,7 @@ __metadata:
     google-closure-compiler-linux-arm64: "npm:^20250915.0.0"
     google-closure-compiler-macos: "npm:^20250915.0.0"
     google-closure-compiler-windows: "npm:^20250915.0.0"
-    gulp: "npm:^4.0.2 || ^5.0.1"
+    gulp: "npm:^5.0.1"
     gulp-sourcemaps: "npm:^3.0.0"
     jasmine: "npm:5.10.0"
     jasmine-console-reporter: "npm:3.1.0"
@@ -1203,7 +1203,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gulp@npm:^4.0.2 || ^5.0.1":
+"gulp@npm:^5.0.1":
   version: 5.0.1
   resolution: "gulp@npm:5.0.1"
   dependencies:
