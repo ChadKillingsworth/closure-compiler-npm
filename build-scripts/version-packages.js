@@ -37,8 +37,8 @@ if (!flags['new-version']) {
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const rootPackageJsonPath = path.resolve(__dirname, '../package.json');
 const rootPackageJson = JSON.parse(fs.readFileSync(rootPackageJsonPath, 'utf-8'));
-const currentVersion = semver(rootPackageJson.version);
-const newVersion = semver(flags['new-version']);
+const currentVersion = semver.parse(rootPackageJson.version);
+const newVersion = semver.parse(flags['new-version']);
 
 if (!semver.gt(newVersion, currentVersion)) {
   process.stderr.write(`New version must be greater than current version\n`);

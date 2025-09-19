@@ -40,10 +40,10 @@
   },
   "homepage": "https://developers.google.com/closure/compiler/",
   "dependencies": {
-    "chalk": "5.x",
+    "chalk": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 <5.6.1 || ^5.6.2 >5.6.1",
     "google-closure-compiler-java": "^20250915.0.0",
-    "minimist": "1.x",
-    "vinyl": "3.x",
+    "minimist": "^1.0.0",
+    "vinyl": "^3.0.1",
     "vinyl-sourcemaps-apply": "^0.2.0"
   },
   "optionalDependencies": {
@@ -53,12 +53,11 @@
     "google-closure-compiler-windows": "^20250915.0.0"
   },
   "devDependencies": {
-    "gulp": "4.x",
-    "gulp-sourcemaps": "2.x",
-    "jasmine": "^5.6.0",
-    "jasmine-console-reporter": "^3.1.0",
-    "ncp": "^2.0.0",
-    "semver": "^5.7.2"
+    "gulp": "^5.0.1",
+    "gulp-sourcemaps": "^3.0.0",
+    "jasmine": "5.10.0",
+    "jasmine-console-reporter": "3.1.0",
+    "ncp": "2.0.0"
   },
   "scripts": {
     "build": "echo \"google-closure-compiler build\"",

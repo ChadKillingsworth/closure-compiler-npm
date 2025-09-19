@@ -30,13 +30,13 @@
   },
   "homepage": "https://developers.google.com/closure/compiler/",
   "devDependencies": {
-    "glob": "11.x",
-    "graphlib": "2.x",
-    "jasmine": "^5.6.0",
-    "jasmine-console-reporter": "^3.1.0",
-    "minimist": "1.x",
-    "ncp": "2.x",
-    "semver": "5.x"
+    "glob": "11.0.3",
+    "graphlib": "2.1.8",
+    "jasmine": "5.10.0",
+    "jasmine-console-reporter": "3.1.0",
+    "minimist": "1.2.8",
+    "ncp": "2.0.0",
+    "semver": "7.7.2"
   },
   "resolutions": {
     "chokidar/glob-parent": "^5.1.2",
