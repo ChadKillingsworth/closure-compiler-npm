@@ -468,24 +468,17 @@ describe('gulp-google-closure-compiler', function() {
         let errorEncountered = false;
         await new Promise((resolve) => {
           gulp.src(`${__dirname}fixtures/**/*.js`, {buffer: false})
+              .on('error', (err) =>{
+                errorEncountered = true;
+                expect(err.message).toMatch(/^(gulp-google-closure-compiler: )?Streaming not supported/);
+                resolve();
+              })
               .pipe(closureCompiler({
                 compilation_level: 'SIMPLE',
                 warning_level: 'VERBOSE'
               }, {
                 platform
-              }))
-              .on('error', (err) => {
-                errorEncountered = true;
-                expect(err.message).toMatch(/^(gulp-google-closure-compiler: )?Streaming not supported/);
-                resolve();
-              });
-        });
-        expect(errorEncountered).toBe(true);
-        await new Promise((resolve) => {
-          setTimeout(() => {
-            process.off('uncaughtException', globalExceptionListener);
-            resolve();
-          });
+              }));
         });
       });
     });
