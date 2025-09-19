@@ -30,7 +30,7 @@ import semver from 'semver';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf-8'));
-const currentVersion = semver(packageJson.version);
+const currentVersion = semver.parse(packageJson.version);
 
 const gitProcess = spawn(
     'git',
@@ -75,7 +75,7 @@ gitProcess.on('close', (exitCode) => {
       if (!/^v\d{8}$/.test(versionTag)) {
         continue;
       }
-      const newerVersion = semver(`${versionTag.slice(1)}.0.0`);
+      const newerVersion = semver.parse(`${versionTag.slice(1)}.0.0`);
       if (
         newerVersion.major > currentVersion.major &&
         (!oldestNewVersion || oldestNewVersion.major > newerVersion.major)
