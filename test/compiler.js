@@ -25,7 +25,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath, URL} from 'node:url';
 import {compiler as Compiler} from 'google-closure-compiler';
-import Semver from 'semver';
+import semver from 'semver';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const packageInfo = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json'), 'utf-8'));
@@ -59,7 +59,7 @@ describe('compiler.jar', function () {
 
   it('version should be equal to the package major version', async () => {
     const compiler = new Compiler({version: true});
-    const packageVer = new Semver(packageInfo.version);
+    const packageVer = semver.parse(packageInfo.version);
     const {exitCode, stdout, stderr} = await new Promise((resolve) =>
         compiler.run((exitCode, stdout, stderr) =>
           resolve({
@@ -81,7 +81,7 @@ describe('compiler.jar', function () {
     let compilerVersion;
     try {
       console.log(versionInfo[1] + '.0.0');
-      compilerVersion = new Semver(versionInfo[1] + '.0.0');
+      compilerVersion = semver.parse(versionInfo[1] + '.0.0');
     } catch (e) {
       fail('should be a semver parseable');
     }
@@ -97,7 +97,7 @@ describe('compiler submodule', () => {
     expect(gitCmd.status).toBe(0);
     console.log(gitCmd.stdout.toString());
     const currentTag = gitCmd.stdout.toString().replace(/\s/g, '');
-    const packageVer = new Semver(packageInfo.version);
+    const packageVer = semver.parse(packageInfo.version);
     const mvnVersion = 'v' + packageVer.major;
     let normalizedTag = currentTag;
     if (normalizedTag) {
