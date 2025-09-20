@@ -346,7 +346,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 <5.6.1 || ^5.6.2 >5.6.1":
+"chalk@npm:5.6.2, chalk@npm:^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 <5.6.1 || ^5.6.2 >5.6.1":
   version: 5.6.2
   resolution: "chalk@npm:5.6.2"
   checksum: 10c0/99a4b0f0e7991796b1e7e3f52dceb9137cae2a9dfc8fc0784a550dc4c558e15ab32ed70b14b21b52beb2679b4892b41a0aa44249bcb996f01e125d58477c6976
@@ -1078,7 +1078,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "google-closure-compiler-java@workspace:packages/google-closure-compiler-java"
   dependencies:
-    chalk: "npm:^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 <5.6.1 || ^5.6.2 >5.6.1"
+    chalk: "npm:5.6.2"
   languageName: unknown
   linkType: soft
 
@@ -1086,7 +1086,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "google-closure-compiler-linux-arm64@workspace:packages/google-closure-compiler-linux-arm64"
   dependencies:
-    chalk: "npm:^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 <5.6.1 || ^5.6.2 >5.6.1"
+    chalk: "npm:5.6.2"
   languageName: unknown
   linkType: soft
 
@@ -1094,7 +1094,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "google-closure-compiler-linux@workspace:packages/google-closure-compiler-linux"
   dependencies:
-    chalk: "npm:^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 <5.6.1 || ^5.6.2 >5.6.1"
+    chalk: "npm:5.6.2"
   languageName: unknown
   linkType: soft
 
@@ -1102,7 +1102,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "google-closure-compiler-macos@workspace:packages/google-closure-compiler-macos"
   dependencies:
-    chalk: "npm:^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 <5.6.1 || ^5.6.2 >5.6.1"
+    chalk: "npm:5.6.2"
   languageName: unknown
   linkType: soft
 
@@ -1110,7 +1110,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "google-closure-compiler-windows@workspace:packages/google-closure-compiler-windows"
   dependencies:
-    chalk: "npm:^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 <5.6.1 || ^5.6.2 >5.6.1"
+    chalk: "npm:5.6.2"
   languageName: unknown
   linkType: soft
 
@@ -1810,6 +1810,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^3.3.11":
+  version: 3.3.11
+  resolution: "nanoid@npm:3.3.11"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: 10c0/40e7f70b3d15f725ca072dfc4f74e81fcf1fbb02e491cf58ac0c79093adc9b0a73b152bcde57df4b79cd097e13023d7504acb38404a4da7bc1cd8e887b82fe0b
+  languageName: node
+  linkType: hard
+
 "ncp@npm:2.0.0":
   version: 2.0.0
   resolution: "ncp@npm:2.0.0"
@@ -2079,10 +2088,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picocolors@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "picocolors@npm:0.2.1"
-  checksum: 10c0/98a83c77912c80aea0fc518aec184768501bfceafa490714b0f43eda9c52e372b844ce0a591e822bbfe5df16dcf366be7cbdb9534d39cf54a80796340371ee17
+"picocolors@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "picocolors@npm:1.1.1"
+  checksum: 10c0/e2e3e8170ab9d7c7421969adaa7e1b31434f789afb9b3f115f6b96d91945041ac3ceb02e9ec6fe6510ff036bcc0bf91e69a1772edc0b707e12b19c0f2d6bcf58
   languageName: node
   linkType: hard
 
@@ -2100,13 +2109,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^7.0.16":
-  version: 7.0.39
-  resolution: "postcss@npm:7.0.39"
+"postcss@npm:^8.4.31":
+  version: 8.5.6
+  resolution: "postcss@npm:8.5.6"
   dependencies:
-    picocolors: "npm:^0.2.1"
-    source-map: "npm:^0.6.1"
-  checksum: 10c0/fd27ee808c0d02407582cccfad4729033e2b439d56cd45534fb39aaad308bb35a290f3b7db5f2394980e8756f9381b458a625618550808c5ff01a125f51efc53
+    nanoid: "npm:^3.3.11"
+    picocolors: "npm:^1.1.1"
+    source-map-js: "npm:^1.2.1"
+  checksum: 10c0/5127cc7c91ed7a133a1b7318012d8bfa112da9ef092dddf369ae699a1f10ebbd89b1b9f25f3228795b84585c72aabd5ced5fc11f2ba467eedf7b081a66fad024
   languageName: node
   linkType: hard
 
@@ -2392,6 +2402,13 @@ __metadata:
     ip-address: "npm:^9.0.5"
     smart-buffer: "npm:^4.2.0"
   checksum: 10c0/00c3271e233ccf1fb83a3dd2060b94cc37817e0f797a93c560b9a7a86c4a0ec2961fb31263bdd24a3c28945e24868b5f063cd98744171d9e942c513454b50ae5
+  languageName: node
+  linkType: hard
+
+"source-map-js@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "source-map-js@npm:1.2.1"
+  checksum: 10c0/7bda1fc4c197e3c6ff17de1b8b2c20e60af81b63a52cb32ec5a5d67a20a7d42651e2cb34ebe93833c5a2a084377e17455854fee3e21e7925c64a51b6a52b0faf
   languageName: node
   linkType: hard
 
