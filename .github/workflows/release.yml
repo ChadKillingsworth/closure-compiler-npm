@@ -16,16 +16,23 @@ jobs:
     name: Create release
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     outputs:
       COMPILER_VERSION_NUMBER: ${{ env.COMPILER_VERSION_NUMBER }}
     env:
       FORCE_COLOR: '1'
       NODE_VERSION: '22.x'
     steps:
+      - uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # 2.1.4
+        id: app-token
+        if: ${{ env.COMPILER_VERSION_NUMBER != '' }}
+        with:
+          app-id: '2007599' # Closure-Compiler Create Release app
+          private-key: ${{ secrets.COMPILER_RELEASE_APP_PRIVATE_KEY }}
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
         with:
           submodules: recursive
+          token: ${{ steps.app-token.outputs.token }}
       - name: Setup Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # 4.4.0
         with:
@@ -49,12 +56,6 @@ jobs:
         if: ${{ env.COMPILER_VERSION_NUMBER != '' }}
         working-directory: compiler
         run: git checkout v${{ env.COMPILER_VERSION_NUMBER }}
-      - uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # 2.1.4
-        id: app-token
-        if: ${{ env.COMPILER_VERSION_NUMBER != '' }}
-        with:
-          app-id: '2007599' # Closure-Compiler Create Release app
-          private-key: ${{ secrets.COMPILER_RELEASE_APP_PRIVATE_KEY }}
       - name: Create release commit and tag
         if: ${{ env.COMPILER_VERSION_NUMBER != '' }}
         run: |
@@ -64,8 +65,6 @@ jobs:
           ./build-scripts/version-packages.js --new-version ${{ env.COMPILER_VERSION_NUMBER }}.0.0
           git push origin master
           git push origin v${{ env.COMPILER_VERSION_NUMBER }}.0.0
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
       - name: Create GitHub Release
         if: ${{ env.COMPILER_VERSION_NUMBER != '' }}
         run: |
