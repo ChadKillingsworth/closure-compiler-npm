@@ -355,7 +355,6 @@ jobs:
     if: ${{ github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_call' }}
     env:
       NODE_VERSION: '24.x'
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH_AUTH_TOKEN }}
       FORCE_COLOR: '1'
     needs:
       - build-linux
@@ -420,6 +419,5 @@ jobs:
         run: ./build-scripts/add-os-restrictions.js
       - name: Publish packages to npm
         run: |
-          sudo npm install -g npm@11.5.1
           npm --version
           yarn publish-packages
