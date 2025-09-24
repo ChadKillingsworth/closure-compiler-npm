@@ -134,7 +134,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
       - name: Install GraalVM
-        uses: actions/setup-graalvm@e140024fdc2d95d3c7e10a636887a91090d29990 # 1.4.0
+        uses: graalvm/setup-graalvm@e140024fdc2d95d3c7e10a636887a91090d29990 # 1.4.0
         with:
           java-version: 24
           distribution: 'graalvm-community'
@@ -194,7 +194,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
       - name: Setup GraalVM
-        uses: actions/setup-graalvm@e140024fdc2d95d3c7e10a636887a91090d29990 # 1.4.0
+        uses: graalvm/setup-graalvm@e140024fdc2d95d3c7e10a636887a91090d29990 # 1.4.0
         with:
           java-version: 24
           distribution: 'graalvm-community'
@@ -251,7 +251,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
       - name: Setup GraalVM
-        uses: actions/setup-graalvm@e140024fdc2d95d3c7e10a636887a91090d29990 # 1.4.0
+        uses: graalvm/setup-graalvm@e140024fdc2d95d3c7e10a636887a91090d29990 # 1.4.0
         with:
           java-version: 24
           distribution: 'graalvm-community'
@@ -308,7 +308,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
       - name: Setup GraalVM
-        uses: actions/setup-graalvm@e140024fdc2d95d3c7e10a636887a91090d29990 # 1.4.0
+        uses: graalvm/setup-graalvm@e140024fdc2d95d3c7e10a636887a91090d29990 # 1.4.0
         with:
           java-version: 24
           distribution: 'graalvm-community'
