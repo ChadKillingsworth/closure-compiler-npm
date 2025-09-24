@@ -364,7 +364,9 @@ jobs:
       - build-windows
     steps:
       - name: Update npm # required to support npm trusted publishing
-        run: sudo npm install -g npm@latest
+        run: |
+          sudo npm install -g npm@latest
+          npm --version
       - name: Checkout repo
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
         with:
@@ -421,4 +423,6 @@ jobs:
       - name: Prepare for publish
         run: ./build-scripts/add-os-restrictions.js
       - name: Publish packages to npm
-        run: yarn publish-packages
+        run: |
+          npm --version
+          yarn publish-packages
