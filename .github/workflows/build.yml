@@ -363,6 +363,8 @@ jobs:
       - build-macos
       - build-windows
     steps:
+      - name: Update npm # required to support npm publishing
+        run: npm install -g npm@latest
       - name: Checkout repo
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # 4.2.2
         with:
