@@ -74,13 +74,3 @@ jobs:
             -H 'Authorization: token ${{ steps.app-token.outputs.token }}' \
             https://api.github.com/repos/chadkillingsworth/closure-compiler-npm/releases \
             -d '{"tag_name":"v${{ env.COMPILER_VERSION_NUMBER }}.0.0","name":"${{ env.COMPILER_VERSION_NUMBER }}.0.0","body":"Closure-compiler ${{ env.COMPILER_VERSION_NUMBER }} release","draft":false,"prerelease":false,"generate_release_notes":true}'
-
-  build:
-    needs: create-release
-    permissions:
-      contents: write
-      id-token: write  # Required for OIDC
-    if: ${{ needs.create-release.outputs.COMPILER_VERSION_NUMBER != '' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      release-tag: v${{ needs.create-release.outputs.COMPILER_VERSION_NUMBER }}.0.0
