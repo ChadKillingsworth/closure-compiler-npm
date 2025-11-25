@@ -1,6 +1,6 @@
 {
   "name": "closure-compiler-npm",
-  "version": "20251118.0.0",
+  "version": "20251123.0.0",
   "private": true,
   "type": "module",
   "workspaces": {
