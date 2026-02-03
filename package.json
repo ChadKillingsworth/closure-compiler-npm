@@ -30,7 +30,7 @@
   },
   "homepage": "https://developers.google.com/closure/compiler/",
   "devDependencies": {
-    "glob": "11.0.3",
+    "glob": "11.1.0",
     "graphlib": "2.1.8",
     "jasmine": "5.10.0",
     "jasmine-console-reporter": "3.1.0",
