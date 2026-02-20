@@ -1,6 +1,6 @@
 {
   "name": "google-closure-compiler-java",
-  "version": "20260217.0.0",
+  "version": "20260218.0.0",
   "description": "Check, compile, optimize and compress Javascript with Closure-Compiler using Java",
   "type": "module",
   "main": "index.js",
