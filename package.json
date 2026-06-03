@@ -56,5 +56,5 @@
     "clean": "./build-scripts/clean.sh",
     "publish-packages": "./build-scripts/publish.js"
   },
-  "packageManager": "yarn@4.9.1"
+  "packageManager": "yarn@4.16.0"
 }
