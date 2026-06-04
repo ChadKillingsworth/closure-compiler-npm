@@ -18,14 +18,14 @@ jobs:
       FORCE_COLOR: '1'
     steps:
       - name: Setup Java
-        uses: actions/setup-java@dded0888837ed1f317902acf8a20df0ad188d165 # 5.0.0
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # 5.2.0
         with:
           distribution: adopt-hotspot
           java-version: 21
           java-package: jdk
           architecture: x64
       - name: Setup Bazelisk
-        uses: bazel-contrib/setup-bazel@4fd964a13a440a8aeb0be47350db2fc640f19ca8 # 0.15.0
+        uses: bazel-contrib/setup-bazel@c5acdfb288317d0b5c0bbd7a396a3dc868bb0f86 # 0.19.0
         with:
           # Avoid downloading Bazel every time.
           bazelisk-cache: true
@@ -34,14 +34,14 @@ jobs:
           # Share repository cache between workflows.
           repository-cache: true
       - name: Checkout repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # 5.0.0
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # 6.0.3
         with:
           submodules: recursive
       - name: Fetch submodule tags
         working-directory: compiler
         run: git fetch --tags https://github.com/google/closure-compiler.git
       - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # 5.0.0
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # 6.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
@@ -53,17 +53,17 @@ jobs:
       - name: Tests
         run: YARN_ENABLE_COLORS=true yarn test:root
       - name: Upload contrib folder
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # 7.0.1
         with:
           name: Contrib folder
           path: compiler/contrib
       - name: Upload externs folder
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # 7.0.1
         with:
           name: Externs folder
           path: compiler/externs
       - name: Upload compiler jar
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # 7.0.1
         with:
           name: Compiler.jar
           path: packages/google-closure-compiler-java/compiler.jar
@@ -76,74 +76,40 @@ jobs:
       contents: read
     runs-on: ubuntu-24.04
     env:
-      NODE_VERSION: '20.x'
+      NODE_VERSION: '22.x'
       FORCE_COLOR: '1'
       MUSL_HOME: ${{ github.workspace }}/musl-toolchain
     steps:
       - name: Checkout repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # 5.0.0
-      - name: Checkout musl
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # 5.0.0
-        with:
-          repository: kraj/musl
-          ref: c47ad25ea3b484e10326f933e927c0bc8cded3da # patched 1.2.5 version
-          path: musl
-          clean: false
-      - name: Checkout zlib
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # 5.0.0
-        with:
-          repository: madler/zlib
-          ref: 04f42ceca40f73e2978b50e93806c2a18c1281fc # v1.2.13
-          path: zlib
-          clean: false
-      - name: Build musl and zlib
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # 6.0.3
+      - name: Install musl toolchain
         run: |
-          # See https://www.graalvm.org/latest/reference-manual/native-image/guides/build-static-executables/
-          # We have to build MUSL from source to ensure recent CVEs are patched
-
-          # Build musl from source
-          pushd musl
-          ./configure --prefix=$MUSL_HOME --static
-          sudo make && make install
-          popd
-
-          # Install a symlink for use by native-image
-          ln -s $MUSL_HOME/bin/musl-gcc $MUSL_HOME/bin/x86_64-linux-musl-gcc
-
-          # Extend the system path and confirm that musl is available by printing its version
-          export PATH="$MUSL_HOME/bin:$PATH"
-          echo "$path" >> $GITHUB_PATH
-          x86_64-linux-musl-gcc --version
-
-          # Build zlib with musl from source and install into the MUSL_HOME directory
-          pushd zlib
-          CC=musl-gcc ./configure --prefix=$MUSL_HOME --static
-          make && make install
-          popd
+          curl -SLO https://gds.oracle.com/download/bfs/archive/musl-toolchain-1.2.5-oracle-00001-linux-amd64.tar.gz
+          tar xzf musl-toolchain-1.2.5-oracle-00001-linux-amd64.tar.gz
       - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # 5.0.0
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # 6.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
       - name: Install GraalVM
-        uses: graalvm/setup-graalvm@e140024fdc2d95d3c7e10a636887a91090d29990 # 1.4.0
+        uses: graalvm/setup-graalvm@329c42c5f4c343bceb505f0b28cc8499bc2bf174 # 1.5.4
         with:
           java-version: 24
           distribution: 'graalvm-community'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
       - name: Download compiler jar
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Compiler.jar
           path: packages/google-closure-compiler-java/
       - name: Download contrib folder
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Contrib folder
           path: packages/google-closure-compiler/contrib
       - name: Download externs folder
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Externs folder
           path: packages/google-closure-compiler/externs
@@ -152,13 +118,13 @@ jobs:
       - name: Build image
         working-directory: packages/google-closure-compiler-linux
         run: |
-          export PATH="$MUSL_HOME/bin:$PATH"
+          export PATH="$(pwd)/musl-toolchain/bin:$PATH"
           cp ../google-closure-compiler-java/compiler.jar compiler.jar
           yarn run build
       - name: Tests
         run: FORCE_COLOR=1 yarn workspaces foreach -A --no-private run test
       - name: Upload artifacts
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # 7.0.1
         with:
           name: Linux image
           path: packages/google-closure-compiler-linux/compiler
@@ -172,36 +138,37 @@ jobs:
     permissions:
       contents: read
     runs-on: ubuntu-24.04-arm
+    if: github.event_name != 'pull_request'
     env:
-      NODE_VERSION: '20.x'
+      NODE_VERSION: '22.x'
       FORCE_COLOR: '1'
     steps:
       - name: Checkout repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # 5.0.0
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # 6.0.3
       - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # 5.0.0
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # 6.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
       - name: Setup GraalVM
-        uses: graalvm/setup-graalvm@e140024fdc2d95d3c7e10a636887a91090d29990 # 1.4.0
+        uses: graalvm/setup-graalvm@329c42c5f4c343bceb505f0b28cc8499bc2bf174 # 1.5.4
         with:
           java-version: 24
           distribution: 'graalvm-community'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
       - name: Download compiler jar
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Compiler.jar
           path: packages/google-closure-compiler-java/
       - name: Download contrib folder
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Contrib folder
           path: packages/google-closure-compiler/contrib
       - name: Download externs folder
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Externs folder
           path: packages/google-closure-compiler/externs
@@ -215,7 +182,7 @@ jobs:
       - name: Tests
         run: FORCE_COLOR=1 yarn workspaces foreach -A --no-private run test
       - name: Upload artifacts
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # 7.0.1
         with:
           name: Linux arm64 image
           path: packages/google-closure-compiler-linux-arm64/compiler
@@ -228,35 +195,35 @@ jobs:
       contents: read
     runs-on: macos-latest
     env:
-      NODE_VERSION: '22.x'
+      NODE_VERSION: '24.x'
       FORCE_COLOR: '1'
     steps:
       - name: Checkout repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # 5.0.0
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # 6.0.3
       - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # 5.0.0
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # 6.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
       - name: Setup GraalVM
-        uses: graalvm/setup-graalvm@e140024fdc2d95d3c7e10a636887a91090d29990 # 1.4.0
+        uses: graalvm/setup-graalvm@329c42c5f4c343bceb505f0b28cc8499bc2bf174 # 1.5.4
         with:
           java-version: 24
           distribution: 'graalvm-community'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
       - name: Download compiler jar
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Compiler.jar
           path: packages/google-closure-compiler-java/
       - name: Download contrib folder
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Contrib folder
           path: packages/google-closure-compiler/contrib
       - name: Download externs folder
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Externs folder
           path: packages/google-closure-compiler/externs
@@ -270,7 +237,7 @@ jobs:
       - name: Tests
         run: FORCE_COLOR=1 yarn workspaces foreach -A --no-private run test
       - name: Upload artifacts
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # 7.0.1
         with:
           name: MacOS image
           path: packages/google-closure-compiler-macos/compiler
@@ -283,35 +250,35 @@ jobs:
       contents: read
     runs-on: windows-latest
     env:
-      NODE_VERSION: '22.x'
+      NODE_VERSION: '26.x'
       FORCE_COLOR: '1'
     steps:
       - name: Checkout repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # 5.0.0
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # 6.0.3
       - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # 5.0.0
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # 6.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
       - name: Setup GraalVM
-        uses: graalvm/setup-graalvm@e140024fdc2d95d3c7e10a636887a91090d29990 # 1.4.0
+        uses: graalvm/setup-graalvm@329c42c5f4c343bceb505f0b28cc8499bc2bf174 # 1.5.4
         with:
           java-version: 24
           distribution: 'graalvm-community'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
       - name: Download compiler jar
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Compiler.jar
           path: packages/google-closure-compiler-java/
       - name: Download contrib folder
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Contrib folder
           path: packages/google-closure-compiler/contrib
       - name: Download externs folder
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Externs folder
           path: packages/google-closure-compiler/externs
@@ -326,7 +293,7 @@ jobs:
         shell: cmd
         run: yarn workspaces foreach -A --no-private run test
       - name: Upload artifacts
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # 7.0.1
         with:
           name: Windows image
           path: packages/google-closure-compiler-windows/compiler.exe
@@ -340,7 +307,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
     env:
-      NODE_VERSION: '24.x'
+      NODE_VERSION: '26.x'
       FORCE_COLOR: '1'
     needs:
       - build-linux
@@ -349,45 +316,45 @@ jobs:
       - build-windows
     steps:
       - name: Checkout repo
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # 5.0.0
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # 6.0.3
       - name: Use Node.js ${{ env.NODE_VERSION }}
-        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # 5.0.0
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # 6.4.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           registry-url: https://registry.npmjs.org/
           cache: yarn
       - name: Download compiler jar
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Compiler.jar
           path: packages/google-closure-compiler-java/
       - name: Download Linux image
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Linux image
           path: packages/google-closure-compiler-linux/
       - name: Download Linux arm64 image
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Linux arm64 image
           path: packages/google-closure-compiler-linux-arm64/
       - name: Download MacOS image
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: MacOS image
           path: packages/google-closure-compiler-macos/
       - name: Download Windows image
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Windows image
           path: packages/google-closure-compiler-windows/
       - name: Download contrib folder
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Contrib folder
           path: packages/google-closure-compiler/contrib
       - name: Download externs folder
-        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # 5.0.0
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
           name: Externs folder
           path: packages/google-closure-compiler/externs

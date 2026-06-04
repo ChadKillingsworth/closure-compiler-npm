@@ -75,7 +75,7 @@ async function main() {
     ),
     copy(
         compilerJavaBinaryPath,
-        './packages/google-closure-compiler-linux/compiler-arm64.jar'
+        './packages/google-closure-compiler-linux-arm64/compiler.jar'
     ),
     copy(
       compilerJavaBinaryPath,
