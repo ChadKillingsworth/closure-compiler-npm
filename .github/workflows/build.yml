@@ -86,7 +86,7 @@ jobs:
       - name: Install musl toolchain
         run: |
           curl -SLO https://gds.oracle.com/download/bfs/archive/musl-toolchain-1.2.5-oracle-00001-linux-amd64.tar.gz
-          tar xzf musl-toolchain-1.2.5-oracle-00001-linux-amd64.tar.gz
+          shasum --algorithm 256 --check <<< '77a60e1d31303f214e1c9d8e5843abcce2743a0c6f6b436e251f69a3161801ad *musl-toolchain-1.2.5-oracle-00001-linux-amd64.tar.gz' && tar xzf musl-toolchain-1.2.5-oracle-00001-linux-amd64.tar.gz
           export PATH="$MUSL_HOME/bin:$PATH"
           echo "$path" >> $GITHUB_PATH
           x86_64-linux-musl-gcc --version
