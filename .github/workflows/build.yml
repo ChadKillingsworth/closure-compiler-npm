@@ -15,8 +15,8 @@ jobs:
     permissions:
       contents: read
     env:
-      FORCE_COLOR: '1'
-      NODE_VERSION: '24.x'
+      FORCE_COLOR: 1
+      NODE_VERSION: 24.x
     steps:
       - name: Setup Java
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # 5.2.0
@@ -77,16 +77,17 @@ jobs:
       contents: read
     runs-on: ubuntu-24.04
     env:
-      NODE_VERSION: '22.x'
-      FORCE_COLOR: '1'
+      NODE_VERSION: 22.x
+      FORCE_COLOR: 1
       MUSL_HOME: ${{ github.workspace }}/musl-toolchain
+      MUSL_FILENAME: musl-toolchain-1.2.5-oracle-00001-linux-amd64.tar.gz
     steps:
       - name: Checkout repo
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # 6.0.3
       - name: Install musl toolchain
         run: |
-          curl -SLO https://gds.oracle.com/download/bfs/archive/musl-toolchain-1.2.5-oracle-00001-linux-amd64.tar.gz
-          shasum --algorithm 256 --check <<< '77a60e1d31303f214e1c9d8e5843abcce2743a0c6f6b436e251f69a3161801ad *musl-toolchain-1.2.5-oracle-00001-linux-amd64.tar.gz' && tar xzf musl-toolchain-1.2.5-oracle-00001-linux-amd64.tar.gz
+          curl -SLO https://gds.oracle.com/download/bfs/archive/${{ env.MUSL_FILENAME }}
+          shasum --algorithm 256 --check <<< '77a60e1d31303f214e1c9d8e5843abcce2743a0c6f6b436e251f69a3161801ad *${{ env.MUSL_FILENAME }}' && tar xzf ${{ env.MUSL_FILENAME }}
           export PATH="$MUSL_HOME/bin:$PATH"
           echo "$path" >> $GITHUB_PATH
           x86_64-linux-musl-gcc --version
@@ -99,9 +100,9 @@ jobs:
         uses: graalvm/setup-graalvm@329c42c5f4c343bceb505f0b28cc8499bc2bf174 # 1.5.4
         with:
           java-version: 24
-          distribution: 'graalvm-community'
+          distribution: graalvm-community
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
+          native-image-job-reports: true
       - name: Download compiler jar
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
@@ -143,8 +144,8 @@ jobs:
       contents: read
     runs-on: ubuntu-24.04-arm
     env:
-      NODE_VERSION: '22.x'
-      FORCE_COLOR: '1'
+      NODE_VERSION: 22.x
+      FORCE_COLOR: 1
     steps:
       - name: Checkout repo
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # 6.0.3
@@ -157,9 +158,9 @@ jobs:
         uses: graalvm/setup-graalvm@329c42c5f4c343bceb505f0b28cc8499bc2bf174 # 1.5.4
         with:
           java-version: 24
-          distribution: 'graalvm-community'
+          distribution: graalvm-community
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
+          native-image-job-reports: true
       - name: Download compiler jar
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
@@ -198,8 +199,8 @@ jobs:
       contents: read
     runs-on: macos-latest
     env:
-      NODE_VERSION: '24.x'
-      FORCE_COLOR: '1'
+      NODE_VERSION: 24.x
+      FORCE_COLOR: 1
     steps:
       - name: Checkout repo
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # 6.0.3
@@ -212,9 +213,9 @@ jobs:
         uses: graalvm/setup-graalvm@329c42c5f4c343bceb505f0b28cc8499bc2bf174 # 1.5.4
         with:
           java-version: 24
-          distribution: 'graalvm-community'
+          distribution: graalvm-community
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
+          native-image-job-reports: true
       - name: Download compiler jar
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
@@ -253,8 +254,8 @@ jobs:
       contents: read
     runs-on: windows-latest
     env:
-      NODE_VERSION: '26.x'
-      FORCE_COLOR: '1'
+      NODE_VERSION: 26.x
+      FORCE_COLOR: 1
     steps:
       - name: Checkout repo
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # 6.0.3
@@ -267,9 +268,9 @@ jobs:
         uses: graalvm/setup-graalvm@329c42c5f4c343bceb505f0b28cc8499bc2bf174 # 1.5.4
         with:
           java-version: 24
-          distribution: 'graalvm-community'
+          distribution: graalvm-community
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          native-image-job-reports: 'true'
+          native-image-job-reports: true
       - name: Download compiler jar
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # 8.0.1
         with:
@@ -310,8 +311,8 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
     env:
-      NODE_VERSION: '26.x'
-      FORCE_COLOR: '1'
+      NODE_VERSION: 26.x
+      FORCE_COLOR: 1
     needs:
       - build-linux
       - build-linux-arm64
