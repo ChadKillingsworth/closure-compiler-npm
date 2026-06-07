@@ -47,59 +47,52 @@ const compilerVersion = `v${semver.major(packageInfo.version)}`;
 const compilerTargetName = 'compiler_uberjar_deploy.jar';
 const compilerJavaBinaryPath = `./compiler/bazel-bin/${compilerTargetName}`;
 
-async function main() {
-  console.log(process.platform, process.arch, compilerVersion);
+console.log(process.platform, process.arch, compilerVersion);
 
-  const { exitCode } = await runCommand(
-    'bazelisk',
-    [
-      'build',
-      '--color=yes',
-      `//:${compilerTargetName}`,
-      `--define=COMPILER_VERSION=${compilerVersion}`,
-    ],
-    { cwd: './compiler' }
-  );
-  if (exitCode !== 0) {
-    throw new Error(exitCode);
-  }
-
-  return Promise.all([
-    copy(
-      compilerJavaBinaryPath,
-      './packages/google-closure-compiler-java/compiler.jar'
-    ),
-    copy(
-      compilerJavaBinaryPath,
-      './packages/google-closure-compiler-linux/compiler.jar'
-    ),
-    copy(
-        compilerJavaBinaryPath,
-        './packages/google-closure-compiler-linux-arm64/compiler.jar'
-    ),
-    copy(
-      compilerJavaBinaryPath,
-      './packages/google-closure-compiler-macos/compiler.jar'
-    ),
-    copy(
-      compilerJavaBinaryPath,
-      './packages/google-closure-compiler-windows/compiler.jar'
-    ),
-    copy('./compiler/contrib', './packages/google-closure-compiler/contrib'),
-  ]);
-}
+await runCommand(
+  'bazelisk',
+  [
+    'build',
+    '--color=yes',
+    `//:${compilerTargetName}`,
+    `--define=COMPILER_VERSION=${compilerVersion}`,
+  ],
+  { cwd: './compiler' }
+);
 
 /**
  * @param {string} src path to source file or folder
  * @param {string} dest path to destination file or folder
  * @return {!Promise<undefined>}
  */
-function copy(src, dest) {
+const copy = (src, dest) => {
   return new Promise((resolve, reject) => {
     ncp(src, dest, (err) => {
       err ? reject(err) : resolve();
     });
   });
-}
+};
 
-main();
+await Promise.all([
+  copy(
+    compilerJavaBinaryPath,
+    './packages/google-closure-compiler-java/compiler.jar'
+  ),
+  copy(
+    compilerJavaBinaryPath,
+    './packages/google-closure-compiler-linux/compiler.jar'
+  ),
+  copy(
+      compilerJavaBinaryPath,
+      './packages/google-closure-compiler-linux-arm64/compiler.jar'
+  ),
+  copy(
+    compilerJavaBinaryPath,
+    './packages/google-closure-compiler-macos/compiler.jar'
+  ),
+  copy(
+    compilerJavaBinaryPath,
+    './packages/google-closure-compiler-windows/compiler.jar'
+  ),
+  copy('./compiler/contrib', './packages/google-closure-compiler/contrib'),
+]);
