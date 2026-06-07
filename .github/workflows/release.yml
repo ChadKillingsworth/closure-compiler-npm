@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       COMPILER_VERSION_NUMBER:
-        description: 'Compiler version to base release from'
+        description: Compiler version to base release from
         required: false
         type: string
   schedule:
@@ -20,13 +20,13 @@ jobs:
     outputs:
       COMPILER_VERSION_NUMBER: ${{ env.COMPILER_VERSION_NUMBER }}
     env:
-      FORCE_COLOR: '1'
-      NODE_VERSION: '24.x'
+      FORCE_COLOR: 1
+      NODE_VERSION: 24.x
     steps:
       - uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # 3.2.0
         id: app-token
         with:
-          app-id: '2007599' # Closure-Compiler Create Release app
+          client-id: Iv23liRTk5hOCKMrQgpc # Closure-Compiler Create Release app
           private-key: ${{ secrets.COMPILER_RELEASE_APP_PRIVATE_KEY }}
           permission-contents: write
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # 6.0.3
