@@ -49,24 +49,10 @@ const createJsonFileRecord = (src, filepath, sourceMap) => ({
  *   sourceMap: string|undefined,
  * }>}
  */
-export default (files) => {
-  /**
-   * @type {!Array<!{
-   *   src: string,
-   *   path: string|undefined,
-   *   sourceMap: string|undefined,
-   * }>}
-   */
-  const jsonFiles = [];
-  for (let i = 0; i < files.length; i++) {
-    jsonFiles.push(
-        createJsonFileRecord(
-            files[i].contents.toString(),
-            files[i].relative || path.relative(process.cwd(), files[i].path),
-            files[i].sourceMap ? JSON.stringify(files[i].sourceMap) : undefined,
-        ),
-    );
-  }
-
-  return jsonFiles;
-};
+export default (files) => files.map((file) =>
+    createJsonFileRecord(
+      file.contents.toString(),
+      file.relative || path.relative(process.cwd(), file.path),
+      file.sourceMap ? JSON.stringify(file.sourceMap) : undefined,
+    )
+);
