@@ -22,6 +22,7 @@
  */
 
 import path from 'node:path';
+import File from 'vinyl';
 
 /**
  * @param {string} src
@@ -33,21 +34,19 @@ import path from 'node:path';
  *   sourceMap: string|undefined,
  * }}
  */
-const json_file = (src, path, sourceMap) => {
-  return {
-    src: src,
-    ...(path !== undefined ? {path} : undefined),
-    ...(sourceMap !== undefined ? {sourceMap} : undefined),
-  };
-};
+const json_file = (src, path, sourceMap) => ({
+  src: src,
+  ...(path !== undefined ? {path} : undefined),
+  ...(sourceMap !== undefined ? {sourceMap} : undefined),
+});
 
 /**
- * @param {!Array<!{
+ * @param {!Array<!File>} files
+ * @return {!Array<!{
  *   src: string,
  *   path: string|undefined,
  *   sourceMap: string|undefined,
- * }>} files
- * @return {string}
+ * }>}
  */
 export default (files) => {
   /**

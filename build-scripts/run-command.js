@@ -26,7 +26,7 @@ import {spawn} from 'node:child_process';
  * @param {Object=} spawnOpts
  * @return {!Promise<!{stdout: string, stderr: string, exitCode: number}>}
  */
-export default function(cmd, args, spawnOpts) {
+export default (cmd, args, spawnOpts) => {
   if (!spawnOpts && args && !Array.isArray(args)) {
     spawnOpts = args;
     args = undefined;
@@ -62,7 +62,7 @@ export default function(cmd, args, spawnOpts) {
       reject(err);
     });
     externalProcess.on('close', (exitCode) => {
-      if (exitCode != 0) {
+      if (exitCode !== 0) {
         const err = new Error(`non-zero exit code ${exitCode}`);
         err.stdout = stdout;
         err.stderr = stderr;
@@ -84,4 +84,4 @@ export default function(cmd, args, spawnOpts) {
   });
   promise.childProcess = externalProcess;
   return promise;
-}
+};
