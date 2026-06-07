@@ -16,7 +16,8 @@
 
 /**
  * @fileoverview Convert an array of vinyl files to
- * a single JSON encoded string to pass to closure-compiler
+ * an Array of records. These records will be later be converted to a JSON
+ * string to pass to closure-compiler
  *
  * @author Chad Killingsworth (chadkillingsworth@gmail.com)
  */
@@ -26,7 +27,7 @@ import File from 'vinyl';
 
 /**
  * @param {string} src
- * @param {string=} path
+ * @param {string=} filepath
  * @param {string=} sourceMap
  * @return {{
  *   src: string,
@@ -34,9 +35,9 @@ import File from 'vinyl';
  *   sourceMap: string|undefined,
  * }}
  */
-const json_file = (src, path, sourceMap) => ({
+const createJsonFileRecord = (src, filepath, sourceMap) => ({
   src: src,
-  ...(path !== undefined ? {path} : undefined),
+  ...(filepath !== undefined ? {path: filepath} : undefined),
   ...(sourceMap !== undefined ? {sourceMap} : undefined),
 });
 
@@ -59,8 +60,12 @@ export default (files) => {
   const jsonFiles = [];
   for (let i = 0; i < files.length; i++) {
     jsonFiles.push(
-        json_file(files[i].contents.toString(), files[i].relative || path.relative(process.cwd(), files[i].path),
-            files[i].sourceMap ? JSON.stringify(files[i].sourceMap) : undefined));
+        createJsonFileRecord(
+            files[i].contents.toString(),
+            files[i].relative || path.relative(process.cwd(), files[i].path),
+            files[i].sourceMap ? JSON.stringify(files[i].sourceMap) : undefined,
+        ),
+    );
   }
 
   return jsonFiles;

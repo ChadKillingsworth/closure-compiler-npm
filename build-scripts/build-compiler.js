@@ -49,7 +49,7 @@ const compilerJavaBinaryPath = `./compiler/bazel-bin/${compilerTargetName}`;
 
 console.log(process.platform, process.arch, compilerVersion);
 
-const { exitCode } = await runCommand(
+await runCommand(
   'bazelisk',
   [
     'build',
@@ -59,9 +59,6 @@ const { exitCode } = await runCommand(
   ],
   { cwd: './compiler' }
 );
-if (exitCode !== 0) {
-  throw new Error(exitCode);
-}
 
 /**
  * @param {string} src path to source file or folder
