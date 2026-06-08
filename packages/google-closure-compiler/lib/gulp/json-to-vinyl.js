@@ -37,8 +37,8 @@ export default (fileList) =>
         path: fileRecord.path,
         contents: Buffer.from(fileRecord.src, 'utf8'),
       });
-      if (fileRecord.source_map || fileList[i].sourceMap) {
-        file.sourceMap = JSON.parse(fileList[i].source_map || fileList[i].sourceMap);
+      if (fileRecord.source_map ?? fileRecord.sourceMap) {
+        file.sourceMap = JSON.parse(fileRecord.source_map ?? fileRecord.sourceMap);
       }
       return file;
     });
