@@ -15,9 +15,11 @@
  */
 
 /**
- * @fileoverview Convert an array of vinyl files to
- * an Array of records. These records will be later be converted to a JSON
- * string to pass to closure-compiler
+ * @fileoverview Conversion utilities taking arrays of either File or JSON file records
+ * and converting them to the other format.
+ *
+ * The JSON records are used to stream into and out of Closure Compiler and the File objects
+ * are the native format when working with Gulp
  *
  * @author Chad Killingsworth (chadkillingsworth@gmail.com)
  */
@@ -47,11 +49,11 @@ export const filesToJson = (files) =>
  *     src: string,
  *     source_map: (string|undefined),
  *     sourceMap: (string|undefined),
- *   }>} fileList array of file objects
+ *   }>} fileRecords
  * @return {!Array<!File>}
  */
-export const jsonToFiles = (fileList) =>
-    fileList.map((fileRecord) => {
+export const jsonToFiles = (fileRecords) =>
+    fileRecords.map((fileRecord) => {
       const file = new File({
         path: fileRecord.path,
         contents: Buffer.from(fileRecord.src, 'utf8'),
