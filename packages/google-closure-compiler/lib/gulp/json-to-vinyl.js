@@ -40,4 +40,5 @@ export default (fileList) =>
       if (fileRecord.source_map || fileList[i].sourceMap) {
         file.sourceMap = JSON.parse(fileList[i].source_map || fileList[i].sourceMap);
       }
+      return file;
     });
