@@ -31,25 +31,46 @@ import chalk from 'chalk';
 import File from 'vinyl';
 import applySourceMap from 'vinyl-sourcemaps-apply';
 
-import filesToJson from './concat-to-json.js';
-import jsonToVinyl from './json-to-vinyl.js';
+import {filesToJson, jsonToFiles} from './file-json-utils.js';
 import Compiler from '../node/index.js';
 import {getNativeImagePath, getFirstSupportedPlatform} from '../utils.js';
 
 const PLUGIN_NAME = 'gulp-google-closure-compiler';
 
+/**
+ * @typedef {{
+ *   log: function(...?): undefined,
+ *   warn: function(...?): void,
+ *   error: function(...?): void,
+ * }|function(...?): void}
+ */
+let Logger;
+
+/** @type {!Logger|undefined} */
+let logger;
+
+/** @return {!Promise<!Logger>} */
 const getLogger = async () => {
+  if (logger) {
+    return logger;
+  }
+
   try {
     const { default: fancyLog } = await import('fancy-log');
-    return fancyLog;
+    logger = fancyLog;
   } catch {}
 
-  try {
-    const { default: gulpUtil } = await import('gulp-util');
-    return gulpUtil.log;
-  } catch {}
+  if (!logger) {
+    try {
+      const {default: gulpUtil} = await import('gulp-util');
+      logger = gulpUtil.log;
+    } catch {}
+  }
 
-  return console;
+  if (!logger) {
+    logger = console;
+  }
+  return logger;
 };
 
 /**
@@ -85,6 +106,10 @@ class CompilationStream extends stream.Transform {
     this.platform = getFirstSupportedPlatform(platforms);
   }
 
+  /**
+   * Used to trigger compiler execution when no input files are streamed
+   * @return {!CompilationStream}
+   */
   src() {
     this._streamInputRequired = false;
     process.nextTick(() => {
@@ -97,6 +122,12 @@ class CompilationStream extends stream.Transform {
     return this;
   }
 
+  /**
+   * @override
+   * @param {!File} file
+   * @param {string} enc
+   * @param {function(Error=): undefined} cb
+   */
   _transform(file, enc, cb) {
     // ignore empty files
     if (!file || file.isNull()) {
@@ -113,6 +144,10 @@ class CompilationStream extends stream.Transform {
     cb();
   }
 
+  /**
+   * @override
+   * @param {function(Error=): undefined} cb
+   */
   async _flush(cb) {
     let jsonFiles;
     if (this.fileList_.length > 0) {
@@ -234,7 +269,7 @@ class CompilationStream extends stream.Transform {
 
     // If present, standard output will be a string of JSON encoded files.
     // Convert these back to vinyl
-    const outputFiles = jsonToVinyl(compiledJs);
+    const outputFiles = jsonToFiles(compiledJs);
 
     for (let i = 0; i < outputFiles.length; i++) {
       if (outputFiles[i].sourceMap) {
