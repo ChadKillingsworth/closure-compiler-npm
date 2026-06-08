@@ -35,7 +35,7 @@ import File from 'vinyl';
  */
 export const filesToJson = (files) =>
     files.map((file) => ({
-      src: file.src,
+      src: file.contents.toString('utf8'),
       path: file.relative || path.relative(process.cwd(), file.path),
       ...(file.sourceMap !== undefined ? {sourceMap: JSON.stringify(file.sourceMap)} : undefined),
     }));
