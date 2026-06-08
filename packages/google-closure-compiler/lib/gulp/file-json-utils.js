@@ -26,22 +26,6 @@ import path from 'node:path';
 import File from 'vinyl';
 
 /**
- * @param {string} src
- * @param {string=} filepath
- * @param {string=} sourceMap
- * @return {{
- *   src: string,
- *   path: string|undefined,
- *   sourceMap: string|undefined,
- * }}
- */
-const createJsonFileRecord = (src, filepath, sourceMap) => ({
-  src: src,
-  ...(filepath !== undefined ? {path: filepath} : undefined),
-  ...(sourceMap !== undefined ? {sourceMap} : undefined),
-});
-
-/**
  * @param {!Array<!File>} files
  * @return {!Array<!{
  *   src: string,
@@ -49,10 +33,31 @@ const createJsonFileRecord = (src, filepath, sourceMap) => ({
  *   sourceMap: string|undefined,
  * }>}
  */
-export default (files) => files.map((file) =>
-    createJsonFileRecord(
-      file.contents.toString('utf8'),
-      file.relative || path.relative(process.cwd(), file.path),
-      file.sourceMap ? JSON.stringify(file.sourceMap) : undefined,
-    )
-);
+export const filesToJson = (files) =>
+    files.map((file) => ({
+      src: file.src,
+      path: file.relative || path.relative(process.cwd(), file.path),
+      ...(file.sourceMap !== undefined ? {sourceMap: JSON.stringify(file.sourceMap)} : undefined),
+    }));
+
+
+/**
+ * @param {!Array<!{
+ *     path: string,
+ *     src: string,
+ *     source_map: (string|undefined),
+ *     sourceMap: (string|undefined),
+ *   }>} fileList array of file objects
+ * @return {!Array<!File>}
+ */
+export const jsonToFiles = (fileList) =>
+    fileList.map((fileRecord) => {
+      const file = new File({
+        path: fileRecord.path,
+        contents: Buffer.from(fileRecord.src, 'utf8'),
+      });
+      if (fileRecord.source_map ?? fileRecord.sourceMap) {
+        file.sourceMap = JSON.parse(fileRecord.source_map ?? fileRecord.sourceMap);
+      }
+      return file;
+    });
