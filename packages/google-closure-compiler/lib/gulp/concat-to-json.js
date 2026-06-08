@@ -51,7 +51,7 @@ const createJsonFileRecord = (src, filepath, sourceMap) => ({
  */
 export default (files) => files.map((file) =>
     createJsonFileRecord(
-      file.contents.toString(),
+      file.contents.toString('utf8'),
       file.relative || path.relative(process.cwd(), file.path),
       file.sourceMap ? JSON.stringify(file.sourceMap) : undefined,
     )
