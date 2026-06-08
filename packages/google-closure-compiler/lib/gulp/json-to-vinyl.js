@@ -26,22 +26,18 @@ import File from 'vinyl';
  * @param {!Array<!{
  *     path: string,
  *     src: string,
- *     sourceMap: (string|undefined)
+ *     source_map: (string|undefined),
+ *     sourceMap: (string|undefined),
  *   }>} fileList array of file objects
  * @return {!Array<!File>}
  */
-export default (fileList) => {
-  let outputFiles = [];
-  for (let i = 0; i < fileList.length; i++) {
-    const file = new File({
-      path: fileList[i].path,
-      contents: Buffer.from(fileList[i].src)
+export default (fileList) =>
+    fileList.map((fileRecord) => {
+      const file = new File({
+        path: fileRecord.path,
+        contents: Buffer.from(fileRecord.src, 'utf8'),
+      });
+      if (fileRecord.source_map || fileList[i].sourceMap) {
+        file.sourceMap = JSON.parse(fileList[i].source_map || fileList[i].sourceMap);
+      }
     });
-    if (fileList[i].source_map || fileList[i].sourceMap) {
-      file.sourceMap = JSON.parse(fileList[i].source_map || fileList[i].sourceMap);
-    }
-    outputFiles.push(file);
-  }
-
-  return outputFiles;
-};
