@@ -44,7 +44,7 @@
     "findup-sync/micromatch": "^4.0.8",
     "glob-stream/glob-parent": "^5.1.2",
     "glob-watcher": "^6.0.0",
-    "ip-address": "^10.2.0",
+    "ip-address": "^10.3.1",
     "matchdep/micromatch": "^4.0.8",
     "picomatch": ">=4.0.4",
     "postcss": "^8.4.31",
